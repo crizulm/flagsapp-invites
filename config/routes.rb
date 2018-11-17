@@ -1,3 +1,5 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  post 'invites', to: 'invites#create', as: 'invites'
+  get 'invites/:token', to: 'invites#show', as: 'invite'
+  delete 'invites/:id', to: 'invites#destroy'
 end
