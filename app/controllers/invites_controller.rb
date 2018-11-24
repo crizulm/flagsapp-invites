@@ -31,9 +31,8 @@ class InvitesController < ApplicationController
   end
 
   def destroy
-    token = params[:token]
     begin
-      Invite.destroy_all(token: token)
+      Invite.destroy(params[:id])
       render nothing: :true, status: :ok
     rescue ActiveRecord::RecordNotFound => e
       render nothing: :true, status: :ok
