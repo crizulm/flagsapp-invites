@@ -5,8 +5,12 @@ class InvitesController < ApplicationController
     organization_id = params[:organization_id]
     email = params[:email]
 
-    check_create_params(sender_id, organization_id, email)
-    create_invitation(sender_id, organization_id, email)
+    errors = check_create_params(sender_id, organization_id, email)
+    if errors.empty?
+      create_invitation(sender_id, organization_id, email)
+    else
+      render json: { errors: errors }, status: :bad_request
+    end
   end
 
   def show
@@ -38,7 +42,7 @@ class InvitesController < ApplicationController
     if email.nil?
       errors.append('The email is NULL')
     end
-    return render json: { errors: errors }, status: :bad_request unless errors.empty?
+    errors
   end
 
   def create_invitation(sender_id, organization_id, email)
@@ -47,18 +51,18 @@ class InvitesController < ApplicationController
 
     if @invite.save
       InviteMailer.new_user_invite(@invite).deliver
-      return render json: { data: @invite }, status: :ok
+      render json: { data: @invite }, status: :ok
     else
       errors = @invite.errors.full_messages
-      return render json: { errors: errors }, status: :bad_request
+      render json: { errors: errors }, status: :bad_request
     end
   end
 
   def show_invitation(invite)
     if !@invite.nil?
-      return render json: { data: @invite }, status: :ok
+      render json: { data: @invite }, status: :ok
     else
-      return render json: { errors: ['The invitation not exist'] }, status: :bad_request
+      render json: { errors: ['The invitation not exist'] }, status: :bad_request
     end
   end
 
