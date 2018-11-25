@@ -5,32 +5,15 @@ class InvitesController < ApplicationController
     organization_id = params[:organization_id]
     email = params[:email]
 
-    errors = check_create_params(sender_id, organization_id, email)
-    if(errors.empty?)
-      @invite = Invite.new(sender_id: sender_id, organization_id: organization_id,
-                           email: email)
-
-      if @invite.save
-        InviteMailer.new_user_invite(@invite).deliver
-        render json: @invite, status: :ok
-      else
-        errors = @invite.errors.full_messages
-        render json: { error: errors }, status: :bad_request
-      end
-    else
-      render json: { error: errors }, status: :bad_request
-    end
+    check_create_params(sender_id, organization_id, email)
+    create_invitation(sender_id, organization_id, email)
   end
 
   def show
     token = params[:token]
     @invite = Invite.find_by(token: token)
 
-    if !@invite.nil?
-      render json: @invite, status: :ok
-    else
-      return render json: { error: ['The invitation not exist'] }, status: :bad_request
-    end
+    show_invitation(@invite)
   end
 
   def destroy
@@ -53,9 +36,30 @@ class InvitesController < ApplicationController
       errors.append('The organization is NULL')
     end
     if email.nil?
-      errors.append('The organization is NULL')
+      errors.append('The email is NULL')
     end
-    errors
+    return render json: { errors: errors }, status: :bad_request unless errors.empty?
+  end
+
+  def create_invitation(sender_id, organization_id, email)
+    @invite = Invite.new(sender_id: sender_id, organization_id: organization_id,
+                         email: email)
+
+    if @invite.save
+      InviteMailer.new_user_invite(@invite).deliver
+      return render json: { data: @invite }, status: :ok
+    else
+      errors = @invite.errors.full_messages
+      return render json: { errors: errors }, status: :bad_request
+    end
+  end
+
+  def show_invitation(invite)
+    if !@invite.nil?
+      return render json: { data: @invite }, status: :ok
+    else
+      return render json: { errors: ['The invitation not exist'] }, status: :bad_request
+    end
   end
 
 end
