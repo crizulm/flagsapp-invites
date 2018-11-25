@@ -9,7 +9,7 @@ class InvitesController < ApplicationController
     if errors.empty?
       create_invitation(sender_id, organization_id, email)
     else
-      render json: { errors: errors }, status: :bad_request
+      render json: errors, status: :bad_request
     end
   end
 
@@ -51,18 +51,18 @@ class InvitesController < ApplicationController
 
     if @invite.save
       InviteMailer.new_user_invite(@invite).deliver
-      render json: { data: @invite }, status: :ok
+      render json: @invite, status: :ok
     else
       errors = @invite.errors.full_messages
-      render json: { errors: errors }, status: :bad_request
+      render json: errors, status: :bad_request
     end
   end
 
   def show_invitation(invite)
     if !@invite.nil?
-      render json: { data: @invite }, status: :ok
+      render json: @invite, status: :ok
     else
-      render json: { errors: ['The invitation not exist'] }, status: :bad_request
+      render json: ['The invitation not exist'], status: :bad_request
     end
   end
 
