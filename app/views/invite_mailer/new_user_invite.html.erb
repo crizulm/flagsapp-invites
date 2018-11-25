@@ -1,5 +1,5 @@
 <h1>FlagsApp</h1>
 <p>Hi, your friend sent you an invitation to FlagsApp. Please click the below link.</p>
-<a href="http://<%= ENV["URL"] %>/<%= ENV["REGISTRATION_PATH"] %><%= @invite.token %>">
-  http://<%= ENV["URL"] %>/<%= ENV["REGISTRATION_PATH"] %><%= @invite.token %>
+<a href="<%= ENV["URL"] %>/<%= ENV["REGISTRATION_PATH"] %><%= @invite.token %>">
+  <%= ENV["URL"] %>/<%= ENV["REGISTRATION_PATH"] %><%= @invite.token %>
 </a>

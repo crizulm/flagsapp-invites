@@ -4,18 +4,21 @@ class InvitesController < ApplicationController
     sender_id = params[:sender_id]
     organization_id = params[:organization_id]
     email = params[:email]
-    return render json: { error: 'The sender is NULL' }, status: :bad_request if sender_id.nil?
-    return render json: { error: 'The organization is NULL' }, status: :bad_request if organization_id.nil?
-    return render json: { error: 'The email is NULL' }, status: :bad_request if email.nil?
 
-    @invite = Invite.new(sender_id: sender_id, organization_id: organization_id,
-                         email: email)
+    errors = check_create_params(sender_id, organization_id, email)
+    if(errors.empty?)
+      @invite = Invite.new(sender_id: sender_id, organization_id: organization_id,
+                           email: email)
 
-    if @invite.save
-      InviteMailer.new_user_invite(@invite).deliver
-      render json: @invite, status: :ok
+      if @invite.save
+        InviteMailer.new_user_invite(@invite).deliver
+        render json: @invite, status: :ok
+      else
+        errors = @invite.errors.full_messages
+        render json: { error: errors }, status: :bad_request
+      end
     else
-      return render json: { error: @invite.errors.full_messages }, status: :bad_request
+      render json: { error: errors }, status: :bad_request
     end
   end
 
@@ -26,7 +29,7 @@ class InvitesController < ApplicationController
     if !@invite.nil?
       render json: @invite, status: :ok
     else
-      return render json: { error: 'The invitation not exist' }, status: :bad_request
+      return render json: { error: ['The invitation not exist'] }, status: :bad_request
     end
   end
 
@@ -37,6 +40,22 @@ class InvitesController < ApplicationController
     rescue ActiveRecord::RecordNotFound => e
       render nothing: :true, status: :ok
     end
+  end
+
+  private
+
+  def check_create_params(sender_id, organization_id, email)
+    errors = []
+    if sender_id.nil?
+      errors.append('The sender is NULL')
+    end
+    if organization_id.nil?
+      errors.append('The organization is NULL')
+    end
+    if email.nil?
+      errors.append('The organization is NULL')
+    end
+    errors
   end
 
 end
