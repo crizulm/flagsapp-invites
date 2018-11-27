@@ -22,11 +22,11 @@ A continuacion iremos a explicar paso por paso como hacer para poder ejecutar Fl
 Primero que nada debemos configurar las variables de entorno en el archivo que se encuentra en <kbd>config/application.yml</kbd> dentro de la seccion **development** las variables que debemos configurar son las siguientes:
 ```
 development:
-  URL: "http://flagsapp-ort.herokuapp.com"
-  REGISTRATION_PATH: "users/sign_up?invite_token="
-  GMAIL_USERNAME: "flagsapp_example@example.com"
-  GMAIL_PASSWORD: "passwordExample"
-  ROLLBAR_ACCESS_TOKEN: "oneRollbarToken"
+  URL: "http://flagsapp-ort.herokuapp.com" # URL de la aplicacion FlagsApp
+  REGISTRATION_PATH: "users/sign_up?invite_token=" # PATH de registro de usuario
+  GMAIL_USERNAME: "flagsapp_example@example.com" # E-mail de GMAIL de FlagsApp 
+  GMAIL_PASSWORD: "passwordExample" # Contraseña del e-mail de GMAIL de FlagsApp
+  ROLLBAR_ACCESS_TOKEN: "oneRollbarToken" # Token del servicio Rollbar
 ```
 2-  **Instalando las Gemas utilizadas**
 Lo segundo que debemos hacer es instalar las gemas que utilizamos corriendo el siguiente comando
