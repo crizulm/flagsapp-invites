@@ -6,7 +6,11 @@ class InvitesController < ApplicationController
     email = params[:email]
 
     errors = check_create_params(sender_id, organization_id, email)
-    errors.empty? ? create_invitation(sender_id, organization_id, email) : render json: errors, status: :bad_request
+    if errors.empty?
+      create_invitation(sender_id, organization_id, email)
+    else
+      render json: errors, status: :bad_request
+    end
   end
 
   def show
