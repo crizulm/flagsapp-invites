@@ -11,7 +11,7 @@ Estas instrucciones te van a permitir poder correr el proyecto tanto en un ambie
 Para poder desplegar FlagsApp Invites Microservice es necesario tener instalado las siguientes herramientas
 
 - [**Ruby 2.5.1P57**](https://www.ruby-lang.org/es/)
-- [**Rails 5.2.1**](https://rubyonrails.org)
+- [**Rails 5.2.0**](https://rubyonrails.org)
 - [**PostgreSQL 10.5**](https://www.postgresql.org)
 
 ### Desplegado development y test
