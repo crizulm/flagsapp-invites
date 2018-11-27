@@ -22,7 +22,7 @@ A continuacion iremos a explicar paso por paso como hacer para poder ejecutar Fl
 Primero que nada debemos configurar las variables de entorno en el archivo que se encuentra en <kbd>config/application.yml</kbd> dentro de la seccion **development** las variables que debemos configurar son las siguientes:
 ```
 development:
-  URL: "http://flagsapp.com"
+  URL: "http://flagsapp-ort.herokuapp.com"
   REGISTRATION_PATH: "users/sign_up?invite_token="
   GMAIL_USERNAME: "flagsapp_example@example.com"
   GMAIL_PASSWORD: "passwordExample"
