@@ -1,4 +1,5 @@
 class InvitesController < ApplicationController
+  before_action :authenticate!, only: [:create, :show, :destroy]
 
   def create
     sender_id = params[:sender_id]
